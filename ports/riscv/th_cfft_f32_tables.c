@@ -15,9 +15,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <th_types.h>
+#include "th_types.h"
 
-#define RISCVBITREVINDEXTABLE_128_TABLE_LENGTH ((uint16_t)208)
 
 /**
   @par
@@ -33,6 +32,91 @@
   @par
   Cos and Sin values are in interleaved fashion
 */
+
+#if defined(__riscv_p) && !defined(__OPTIMIZE__)
+#define RISCVBITREVINDEXTABLE_128_TABLE_LENGTH ((uint16_t)112)
+
+const float32_t twiddleCoef_128[192] = {
+	(float32_t)0x7FFFFFFF, (float32_t)0x00000000, (float32_t)0x7FD8878D,
+	(float32_t)0x0647D97C, (float32_t)0x7F62368F, (float32_t)0x0C8BD35E,
+	(float32_t)0x7E9D55FC, (float32_t)0x12C8106E, (float32_t)0x7D8A5F3F,
+	(float32_t)0x18F8B83C, (float32_t)0x7C29FBEE, (float32_t)0x1F19F97B,
+	(float32_t)0x7A7D055B, (float32_t)0x25280C5D, (float32_t)0x78848413,
+	(float32_t)0x2B1F34EB, (float32_t)0x7641AF3C, (float32_t)0x30FBC54D,
+	(float32_t)0x73B5EBD0, (float32_t)0x36BA2013, (float32_t)0x70E2CBC6,
+	(float32_t)0x3C56BA70, (float32_t)0x6DCA0D14, (float32_t)0x41CE1E64,
+	(float32_t)0x6A6D98A4, (float32_t)0x471CECE6, (float32_t)0x66CF811F,
+	(float32_t)0x4C3FDFF3, (float32_t)0x62F201AC, (float32_t)0x5133CC94,
+	(float32_t)0x5ED77C89, (float32_t)0x55F5A4D2, (float32_t)0x5A82799A,
+	(float32_t)0x5A82799A, (float32_t)0x55F5A4D2, (float32_t)0x5ED77C89,
+	(float32_t)0x5133CC94, (float32_t)0x62F201AC, (float32_t)0x4C3FDFF3,
+	(float32_t)0x66CF811F, (float32_t)0x471CECE6, (float32_t)0x6A6D98A4,
+	(float32_t)0x41CE1E64, (float32_t)0x6DCA0D14, (float32_t)0x3C56BA70,
+	(float32_t)0x70E2CBC6, (float32_t)0x36BA2013, (float32_t)0x73B5EBD0,
+	(float32_t)0x30FBC54D, (float32_t)0x7641AF3C, (float32_t)0x2B1F34EB,
+	(float32_t)0x78848413, (float32_t)0x25280C5D, (float32_t)0x7A7D055B,
+	(float32_t)0x1F19F97B, (float32_t)0x7C29FBEE, (float32_t)0x18F8B83C,
+	(float32_t)0x7D8A5F3F, (float32_t)0x12C8106E, (float32_t)0x7E9D55FC,
+	(float32_t)0x0C8BD35E, (float32_t)0x7F62368F, (float32_t)0x0647D97C,
+	(float32_t)0x7FD8878D, (float32_t)0x00000000, (float32_t)0x7FFFFFFF,
+	(float32_t)0xF9B82683, (float32_t)0x7FD8878D, (float32_t)0xF3742CA1,
+	(float32_t)0x7F62368F, (float32_t)0xED37EF91, (float32_t)0x7E9D55FC,
+	(float32_t)0xE70747C3, (float32_t)0x7D8A5F3F, (float32_t)0xE0E60684,
+	(float32_t)0x7C29FBEE, (float32_t)0xDAD7F3A2, (float32_t)0x7A7D055B,
+	(float32_t)0xD4E0CB14, (float32_t)0x78848413, (float32_t)0xCF043AB2,
+	(float32_t)0x7641AF3C, (float32_t)0xC945DFEC, (float32_t)0x73B5EBD0,
+	(float32_t)0xC3A9458F, (float32_t)0x70E2CBC6, (float32_t)0xBE31E19B,
+	(float32_t)0x6DCA0D14, (float32_t)0xB8E31319, (float32_t)0x6A6D98A4,
+	(float32_t)0xB3C0200C, (float32_t)0x66CF811F, (float32_t)0xAECC336B,
+	(float32_t)0x62F201AC, (float32_t)0xAA0A5B2D, (float32_t)0x5ED77C89,
+	(float32_t)0xA57D8666, (float32_t)0x5A82799A, (float32_t)0xA1288376,
+	(float32_t)0x55F5A4D2, (float32_t)0x9D0DFE53, (float32_t)0x5133CC94,
+	(float32_t)0x99307EE0, (float32_t)0x4C3FDFF3, (float32_t)0x9592675B,
+	(float32_t)0x471CECE6, (float32_t)0x9235F2EB, (float32_t)0x41CE1E64,
+	(float32_t)0x8F1D343A, (float32_t)0x3C56BA70, (float32_t)0x8C4A142F,
+	(float32_t)0x36BA2013, (float32_t)0x89BE50C3, (float32_t)0x30FBC54D,
+	(float32_t)0x877B7BEC, (float32_t)0x2B1F34EB, (float32_t)0x8582FAA4,
+	(float32_t)0x25280C5D, (float32_t)0x83D60411, (float32_t)0x1F19F97B,
+	(float32_t)0x8275A0C0, (float32_t)0x18F8B83C, (float32_t)0x8162AA03,
+	(float32_t)0x12C8106E, (float32_t)0x809DC970, (float32_t)0x0C8BD35E,
+	(float32_t)0x80277872, (float32_t)0x0647D97C, (float32_t)0x80000000,
+	(float32_t)0x00000000, (float32_t)0x80277872, (float32_t)0xF9B82683,
+	(float32_t)0x809DC970, (float32_t)0xF3742CA1, (float32_t)0x8162AA03,
+	(float32_t)0xED37EF91, (float32_t)0x8275A0C0, (float32_t)0xE70747C3,
+	(float32_t)0x83D60411, (float32_t)0xE0E60684, (float32_t)0x8582FAA4,
+	(float32_t)0xDAD7F3A2, (float32_t)0x877B7BEC, (float32_t)0xD4E0CB14,
+	(float32_t)0x89BE50C3, (float32_t)0xCF043AB2, (float32_t)0x8C4A142F,
+	(float32_t)0xC945DFEC, (float32_t)0x8F1D343A, (float32_t)0xC3A9458F,
+	(float32_t)0x9235F2EB, (float32_t)0xBE31E19B, (float32_t)0x9592675B,
+	(float32_t)0xB8E31319, (float32_t)0x99307EE0, (float32_t)0xB3C0200C,
+	(float32_t)0x9D0DFE53, (float32_t)0xAECC336B, (float32_t)0xA1288376,
+	(float32_t)0xAA0A5B2D, (float32_t)0xA57D8666, (float32_t)0xA57D8666,
+	(float32_t)0xAA0A5B2D, (float32_t)0xA1288376, (float32_t)0xAECC336B,
+	(float32_t)0x9D0DFE53, (float32_t)0xB3C0200C, (float32_t)0x99307EE0,
+	(float32_t)0xB8E31319, (float32_t)0x9592675B, (float32_t)0xBE31E19B,
+	(float32_t)0x9235F2EB, (float32_t)0xC3A9458F, (float32_t)0x8F1D343A,
+	(float32_t)0xC945DFEC, (float32_t)0x8C4A142F, (float32_t)0xCF043AB2,
+	(float32_t)0x89BE50C3, (float32_t)0xD4E0CB14, (float32_t)0x877B7BEC,
+	(float32_t)0xDAD7F3A2, (float32_t)0x8582FAA4, (float32_t)0xE0E60684,
+	(float32_t)0x83D60411, (float32_t)0xE70747C3, (float32_t)0x8275A0C0,
+	(float32_t)0xED37EF91, (float32_t)0x8162AA03, (float32_t)0xF3742CA1,
+	(float32_t)0x809DC970, (float32_t)0xF9B82683, (float32_t)0x80277872
+};
+
+const uint16_t armBitRevIndexTable128[ARMBITREVINDEXTABLE_FIXED_128_TABLE_LENGTH] =
+{
+   /* 4x2, size 112 */
+   8,512, 16,256, 24,768, 32,128, 40,640, 48,384, 56,896, 72,576, 80,320, 88,832, 96,192,
+   104,704, 112,448, 120,960, 136,544, 144,288, 152,800, 168,672, 176,416, 184,928, 200,608,
+   208,352, 216,864, 232,736, 240,480, 248,992, 264,528, 280,784, 296,656, 304,400, 312,912,
+   328,592, 344,848, 360,720, 368,464, 376,976, 392,560, 408,816, 424,688, 440,944, 456,624,
+   472,880, 488,752, 504,1008, 536,776, 552,648, 568,904, 600,840, 616,712, 632,968,
+   664,808, 696,936, 728,872, 760,1000, 824,920, 888,984
+};
+#else
+
+#define RISCVBITREVINDEXTABLE_128_TABLE_LENGTH ((uint16_t)208)
+
 const float32_t twiddleCoef_128[256] = {
     1.000000000f,  0.000000000f,
     0.998795456f,  0.049067674f,
@@ -181,3 +265,6 @@ const uint16_t armBitRevIndexTable128[RISCVBITREVINDEXTABLE_128_TABLE_LENGTH] =
    792,864, 808,904, 816,864, 824,920, 840,864, 856,880, 872,944, 888,1008,
    904,928, 912,960, 920,992, 944,968, 952,1000, 968,992, 984,1008
 };
+#endif
+
+
