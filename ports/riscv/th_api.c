@@ -14,7 +14,8 @@
 
 #include "ee_audiomark.h"
 #include "ee_api.h"
-#include "th_cfft_f32_tables.c"
+#include "th_cfft.h"
+
 // These are the input audio files and some scratchpad
 const int16_t downlink_audio[NINPUT_SAMPLES] = {
 #include "ee_data/noise.txt"
@@ -93,7 +94,7 @@ th_cfft_init_f32(ee_cfft_f32_t *p_instance, int fft_length)
         return EE_STATUS_ERROR;
     }
     p_instance->fftLen = 128;
-    p_instance->pBitRevTable = armBitRevIndexTable128;
+    p_instance->pBitRevTable = riscvBitRevIndexTable128;
     p_instance->bitRevLength = RISCVBITREVINDEXTABLE_128_TABLE_LENGTH;
     return EE_STATUS_OK;
 }
@@ -104,7 +105,24 @@ th_cfft_f32(ee_cfft_f32_t *p_instance,
             uint8_t        ifftFlag,
             uint8_t        bitReverseFlagR)
 {
-    #warning "th_cfft_f32() not implemented"
+        uint32_t fftLen = p_instance->fftLen;
+        /* fftLen is always 128 */
+        if (ifftFlag == 1U) {
+
+            riscv_cfft_radix4by2_inverse(p_instance, p_buf, fftLen);
+
+        } else {
+
+            riscv_cfft_radix4by2(p_instance, p_buf , fftLen);
+
+        }
+
+        if (bitReverseFlagR)
+        {
+
+            riscv_bitreversal_32_inpl((uint32_t *)p_buf, p_instance->bitRevLength, p_instance->pBitRevTable);
+
+        }
 }
 
 ee_status_t
