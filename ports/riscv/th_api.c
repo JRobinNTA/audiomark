@@ -15,7 +15,7 @@
 #include "ee_audiomark.h"
 #include "ee_api.h"
 #include "th_cfft.h"
-
+#include "string.h"
 // These are the input audio files and some scratchpad
 const int16_t downlink_audio[NINPUT_SAMPLES] = {
 #include "ee_data/noise.txt"
@@ -93,9 +93,8 @@ th_cfft_init_f32(ee_cfft_f32_t *p_instance, int fft_length)
     {
         return EE_STATUS_ERROR;
     }
-    p_instance->fftLen = 128;
-    p_instance->pBitRevTable = riscvBitRevIndexTable128;
-    p_instance->bitRevLength = RISCVBITREVINDEXTABLE_128_TABLE_LENGTH;
+    riscv_cfft_init(p_instance);
+
     return EE_STATUS_OK;
 }
 

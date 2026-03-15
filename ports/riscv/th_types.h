@@ -16,7 +16,8 @@
 
 /* If P extension is active use q31 instead of f32 
  * dsp_scalar_t is the type alias to avoid messy code*/
-#if defined(__riscv_p) && !defined(__OPTIMIZE__)
+#if defined(__riscv_p)
+#include <riscv_p_asm.h>
 #define TH_FLOAT32_TYPE int32_t
 typedef int32_t dsp_scalar_t;
 typedef int32_t q31_t;
@@ -46,7 +47,7 @@ typedef struct
     const dsp_scalar_t *pTwiddle;         /**< points to the Twiddle factor table. */
     const uint16_t *pBitRevTable;      /**< points to the bit reversal table. */
           uint16_t bitRevLength;             /**< bit reversal table length. */
-#if defined(__riscv_p) && !defined(__OPTIMIZE__)
+#if defined(__riscv_p)
 
     const uint32_t *rearranged_twiddle_tab_stride1_arr;        /**< Per stage reordered twiddle pointer (offset 1) */                                                       \
     const uint32_t *rearranged_twiddle_tab_stride2_arr;        /**< Per stage reordered twiddle pointer (offset 2) */                                                       \
