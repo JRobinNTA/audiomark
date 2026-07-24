@@ -45,10 +45,4 @@ Optimized implementation for the RISC-V "V" Vector Extension
 ```bash
 -DPORT_DIR=ports/riscv/v
 ```
-
-Optimized implementation for the RISC-V "P" Packed SIMD Extension
-```bash
--DPORT_DIR=ports/riscv/p
-```
-
-Note: Optimizations for the V and P extensions are currently work in progress. Some parts of these implementations may still fall back to scalar routines. For more details on each implementation, refer to the README in the respective port directory. 
+Note: Optimizations for the V extension is currently work in progress. Some parts of these implementations may still fall back to scalar routines. For more details on each implementation, refer to the README in the respective port directory. 
